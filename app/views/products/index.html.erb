@@ -15,7 +15,19 @@
 
     <div class="product border-light">
       <div class="product-thumb">
-      <%= link_to image_tag(product.image_url), product %>
+      <% if product.image? %>
+        <%= link_to image_tag(product.image_url), product %>
+      <% else %>
+        <%= link_to product do %>
+          <div class="image is-4by3 has-background-light">
+            <div class="is-flex is-align-items-center is-justify-content-center" style="height: 100%;">
+              <span class="icon is-large has-text-grey-light">
+                <i class="fas fa-image fa-2x"></i>
+              </span>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
       <% if product.condition? %>
         <div class="condition">
           <span class="tag is-dark"><%= product.condition %></span>

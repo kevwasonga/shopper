@@ -6,15 +6,14 @@ class ApplicationController < ActionController::Base
     # Make cart_item_count available to all views
     helper_method :cart_item_count
 
-    # Handle cart merging after user signs in
-    before_action :merge_guest_cart_after_sign_in
+    # Ensure current_cart is available for all actions
+    before_action :set_current_cart
 
     private
 
-    def merge_guest_cart_after_sign_in
-      if user_signed_in? && session[:cart_id]
-        # Force cart merging by calling current_cart
-        current_cart
-      end
+    def set_current_cart
+      # This ensures current_cart is initialized for each request
+      # The CurrentCart concern handles the logic for guest vs user carts
+      current_cart
     end
 end

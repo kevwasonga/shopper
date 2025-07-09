@@ -12,8 +12,8 @@ module CurrentCart
       # For signed-in users, find or create cart associated with user
       current_user_cart = Cart.find_by(user: current_user) || Cart.create(user: current_user)
 
-      # If there's a session cart, merge it with user cart
-      if session[:cart_id]
+      # If there's a session cart and it's different from user cart, merge it
+      if session[:cart_id] && session[:cart_id] != current_user_cart.id
         session_cart = Cart.find_by(id: session[:cart_id])
         if session_cart && session_cart != current_user_cart && !session_cart.empty?
           merge_carts(session_cart, current_user_cart)
@@ -27,11 +27,11 @@ module CurrentCart
       # For guest users, use session-based cart
       if session[:cart_id]
         cart = Cart.find_by(id: session[:cart_id])
-        return cart if cart
+        return cart if cart && cart.user.nil? # Ensure it's a guest cart
       end
 
-      # Create new guest cart
-      cart = Cart.create
+      # Create new guest cart (without user association)
+      cart = Cart.create(user: nil)
       session[:cart_id] = cart.id
       cart
     end
