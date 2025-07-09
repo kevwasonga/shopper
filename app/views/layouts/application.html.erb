@@ -8,6 +8,7 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   </head>
 
   <body>
@@ -42,6 +43,16 @@
             <% if user_signed_in? %>
               <%= link_to 'Sell', new_product_path, class: "navbar-item button is-dark" %>
 
+              <%# Cart icon with item count %>
+              <%= link_to cart_path, class: "navbar-item" do %>
+                <span class="icon-text">
+                  <span class="icon">
+                    <i class="fas fa-shopping-cart"></i>
+                  </span>
+                  <span>Cart (<%= cart_item_count %>)</span>
+                </span>
+              <% end %>
+
               <div class="navbar-item has-dropdown is-hoverable">
                 <%= link_to 'Account', edit_user_registration_path, class: "navbar-link" %>
                 <div class="navbar-dropdown is-right">
@@ -50,6 +61,16 @@
                 </div>
               </div>
             <% else %>
+
+            <%# Cart icon for guest users %>
+            <%= link_to cart_path, class: "navbar-item" do %>
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fas fa-shopping-cart"></i>
+                </span>
+                <span>Cart (<%= cart_item_count %>)</span>
+              </span>
+            <% end %>
 
             <%= link_to "Sign In", new_user_session_path, class:"navbar-item button is-warning" %>
             <%= link_to "Sign up", new_user_registration_path, class:"navbar-item button is-warning"%>

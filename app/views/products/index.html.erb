@@ -32,18 +32,21 @@
 
       <p class="f3 fw6 has-text-right pt2 price"><%= number_to_currency(product.price) %></p>
 
-      <%# Only show edit/delete links to the product owner %>
-      <% if can_edit_product?(product) %>
-        <div class="product-actions pt2">
-          <%= link_to 'Edit', edit_product_path(product), class: 'button is-small is-info' %>
+      <div class="product-actions pt2">
+        <%# Add to Cart button for all users %>
+        <%= form_with url: add_item_cart_path, method: :post, local: true, class: "is-inline-block" do |form| %>
+          <%= form.hidden_field :product_id, value: product.id %>
+          <%= form.hidden_field :quantity, value: 1 %>
+          <%= form.submit "Add to Cart", class: "button is-small is-success" %>
+        <% end %>
+
+        <%# Only show edit/delete links to the product owner %>
+        <% if can_edit_product?(product) %>
+          <%= link_to 'Edit', edit_product_path(product), class: 'button is-small is-info ml-2' %>
           <%= link_to 'Delete', product_path(product), method: :delete,
-                      confirm: 'Are you sure?', class: 'button is-small is-danger' %>
-        </div>
-      <% end %>
- at the moment every one can do that, find a way to fix this %>
-      
-       <%= link_to 'Edit', edit_product_path(product), class: "button is-small" %>
-       <%= link_to 'Delete', product, data: { confirm: "Are you sure ?" }, :method => :delete, class: "button is-small" %>
+                      confirm: 'Are you sure?', class: 'button is-small is-danger ml-2' %>
+        <% end %>
+      </div>
 
     </div>
   </div>

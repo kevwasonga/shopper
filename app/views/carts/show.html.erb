@@ -1,0 +1,110 @@
+<% content_for :header do %>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Your Shopping Cart
+      </h1>
+    </div>
+  </div>
+</section>
+<% end %>
+
+<div class="container mt-4">
+  <% if @cart_items.any? %>
+    <div class="columns">
+      <div class="column is-8">
+        <div class="box">
+          <h2 class="title is-4">Cart Items</h2>
+          
+          <% @cart_items.each do |item| %>
+            <div class="cart-item mb-4 p-3" style="border-bottom: 1px solid #eee;">
+              <div class="columns is-vcentered">
+                <div class="column is-2">
+                  <%= image_tag(item.product.image_url(:thumb), class: "image is-64x64") if item.product.image? %>
+                </div>
+                
+                <div class="column is-4">
+                  <h4 class="title is-5"><%= item.product.title %></h4>
+                  <p class="subtitle is-6"><%= item.product.brand %> - <%= item.product.model %></p>
+                  <p class="has-text-grey">Condition: <%= item.product.condition %></p>
+                </div>
+                
+                <div class="column is-2">
+                  <p class="has-text-weight-bold">
+                    <%= number_to_currency(item.product.price) %>
+                  </p>
+                </div>
+                
+                <div class="column is-2">
+                  <div class="field has-addons">
+                    <div class="control">
+                      <span class="button is-static">Qty:</span>
+                    </div>
+                    <div class="control">
+                      <span class="button is-static"><%= item.quantity %></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="column is-2">
+                  <p class="has-text-weight-bold has-text-right">
+                    <%= number_to_currency(item.total_price) %>
+                  </p>
+                  <%= link_to "Remove", remove_item_cart_path(product_id: item.product.id), 
+                              method: :delete, 
+                              class: "button is-small is-danger is-outlined mt-2",
+                              confirm: "Remove #{item.product.title} from cart?" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="column is-4">
+        <div class="box">
+          <h3 class="title is-4">Order Summary</h3>
+          
+          <div class="field">
+            <label class="label">Total Items:</label>
+            <p class="has-text-weight-bold"><%= @cart.total_items %></p>
+          </div>
+          
+          <div class="field">
+            <label class="label">Total Price:</label>
+            <p class="title is-3 has-text-primary">
+              <%= number_to_currency(@cart.total_price) %>
+            </p>
+          </div>
+          
+          <div class="field">
+            <button class="button is-success is-large is-fullwidth">
+              Proceed to Checkout
+            </button>
+          </div>
+          
+          <div class="field">
+            <%= link_to "Empty Cart", empty_cart_path, 
+                        method: :delete, 
+                        class: "button is-danger is-outlined is-fullwidth",
+                        confirm: "Are you sure you want to empty your cart?" %>
+          </div>
+          
+          <div class="field">
+            <%= link_to "Continue Shopping", products_path, 
+                        class: "button is-light is-fullwidth" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="has-text-centered">
+      <div class="box">
+        <h2 class="title is-4">Your cart is empty</h2>
+        <p class="subtitle">Add some products to get started!</p>
+        <%= link_to "Browse Products", products_path, class: "button is-primary is-large" %>
+      </div>
+    </div>
+  <% end %>
+</div>
