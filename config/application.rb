@@ -1,6 +1,6 @@
 require_relative "boot"
 
-# Fix for Ruby 3.0.0 Logger compatibility
+# Fix Logger compatibility issue with Ruby 3.0.0 and Rails 6.1.3
 require 'logger'
 
 require "rails/all"
