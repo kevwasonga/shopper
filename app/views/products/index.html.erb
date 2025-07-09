@@ -28,11 +28,18 @@
 
       <h3 class="fw7 f4 title"><%= link_to product.title, product %></h3>
 
-      <p class="has-text-gray fg pt1">Sold by: <%=  %></p>
+      <p class="has-text-gray fg pt1">Sold by: <%= product_author(product) %></p>
 
       <p class="f3 fw6 has-text-right pt2 price"><%= number_to_currency(product.price) %></p>
 
- <%# This is where you will have to add the code so that only the user will be able to edit or delete
+      <%# Only show edit/delete links to the product owner %>
+      <% if can_edit_product?(product) %>
+        <div class="product-actions pt2">
+          <%= link_to 'Edit', edit_product_path(product), class: 'button is-small is-info' %>
+          <%= link_to 'Delete', product_path(product), method: :delete,
+                      confirm: 'Are you sure?', class: 'button is-small is-danger' %>
+        </div>
+      <% end %>
  at the moment every one can do that, find a way to fix this %>
       
        <%= link_to 'Edit', edit_product_path(product), class: "button is-small" %>

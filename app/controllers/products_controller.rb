@@ -1,7 +1,8 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [ :show, :edit, :update, :destroy ]
-  
+
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :check_owner, only: [:edit, :update, :destroy]
 
 
   # GET /products or /products.json
@@ -56,13 +57,25 @@ class ProductsController < ApplicationController
   end
 
  # DELETE /products/1 or /products/1.json
-def destroy
-end
+  def destroy
+    @product.destroy
+    respond_to do |format|
+      format.html { redirect_to products_url, notice: "Product was successfully deleted." }
+      format.json { head :no_content }
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
       @product = Product.find(params[:id])
+    end
+
+    # Check if current user owns the product
+    def check_owner
+      unless @product.user == current_user
+        redirect_to products_path, alert: "You can only edit or delete your own products."
+      end
     end
 
     # Only allow a list of trusted parameters through.
