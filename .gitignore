@@ -38,3 +38,41 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore gem files
+*.gem
+
+# Ignore coverage reports
+/coverage/
+
+# Ignore spring files
+/spring/*.pid
+
+# Ignore uploaded images (CarrierWave)
+/public/uploads/
+
+# Ignore environment variables
+.env
+.env.local
+.env.*.local
+
+# Ignore project management files
+tasks.txt
+shop_prompt.txt
+IMPLEMENTATION_STATUS.md
