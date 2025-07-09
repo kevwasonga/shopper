@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   # Cart routes
   resource :cart, only: [:show, :destroy] do
     post :add_item
+    patch :increase_quantity
+    patch :decrease_quantity
     delete :remove_item
     delete :empty
   end

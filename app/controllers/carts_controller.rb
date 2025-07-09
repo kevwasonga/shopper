@@ -1,7 +1,7 @@
 class CartsController < ApplicationController
   include CurrentCart
   
-  before_action :set_cart, only: [:show, :destroy]
+  before_action :set_cart, only: [:show, :destroy, :increase_quantity, :decrease_quantity]
   
   # GET /cart
   def show
@@ -28,7 +28,43 @@ class CartsController < ApplicationController
       }
     end
   end
-  
+
+  # PATCH /cart/increase_quantity
+  def increase_quantity
+    product = Product.find(params[:product_id])
+    cart_item = current_cart.cart_items.find_by(product: product)
+
+    if cart_item
+      cart_item.increase_quantity(1)
+      flash[:notice] = "Quantity updated."
+    else
+      flash[:alert] = "Item not found in cart."
+    end
+
+    redirect_to cart_path
+  end
+
+  # PATCH /cart/decrease_quantity
+  def decrease_quantity
+    product = Product.find(params[:product_id])
+    cart_item = current_cart.cart_items.find_by(product: product)
+
+    if cart_item
+      if cart_item.quantity > 1
+        cart_item.decrease_quantity(1)
+        flash[:notice] = "Quantity updated."
+      else
+        # If quantity would become 0, remove the item entirely
+        current_cart.remove_product(product)
+        flash[:notice] = "#{product.title} was removed from your cart."
+      end
+    else
+      flash[:alert] = "Item not found in cart."
+    end
+
+    redirect_to cart_path
+  end
+
   # DELETE /cart/remove_item/:product_id
   def remove_item
     product = Product.find(params[:product_id])
