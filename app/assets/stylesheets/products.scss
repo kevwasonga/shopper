@@ -1,9 +1,24 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+// Product listing page
+.product-index-grid {
+  .product-thumb img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+}
+
+// Product show page
 .product-show {
     .feature-image img {
       width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 4px;
     }
     .add-to-cart {
       width: 100%;

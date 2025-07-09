@@ -15,7 +15,7 @@
 
     <div class="product border-light">
       <div class="product-thumb">
-      <%= link_to image_tag(product.image_url(:thumb)), product %>
+      <%= link_to image_tag(product.image_url), product %>
       <% if product.condition? %>
         <div class="condition">
           <span class="tag is-dark"><%= product.condition %></span>
